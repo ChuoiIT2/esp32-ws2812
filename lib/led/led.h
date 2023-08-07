@@ -3,7 +3,15 @@
 
 #include <Adafruit_NeoPixel.h>
 #include <vector>
-#include "fx.h"
+
+enum FX
+{
+    OFF = 0,
+    WIPE_COLOR = 1,
+    ROTATE_COLOR = 2,
+    CHASE_THEATER = 3,
+    RAINBOW = 4,
+};
 
 class Led
 {
