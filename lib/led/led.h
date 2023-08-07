@@ -21,9 +21,11 @@ private:
     uint8_t numPixels;
 
 public:
-    Adafruit_NeoPixel getPixels();
+    Led();
 
     Led(uint8_t pin, uint8_t numPixels);
+
+    Adafruit_NeoPixel getPixels();
 
     void runFX(FX fx, uint32_t color, uint32_t wait);
 
@@ -36,6 +38,10 @@ public:
     void chaseTheater(uint32_t color, uint32_t wait);
 
     void rainbow(uint32_t wait);
+
+    void fadingPulse(uint32_t color, uint32_t fadeInTime, uint32_t holdTime, uint32_t fadeOutTime);
+
+    void sparkle(uint32_t color, int numSparkles, uint32_t sparkleDuration);
 };
 
 #endif

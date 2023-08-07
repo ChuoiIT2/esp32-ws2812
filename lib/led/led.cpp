@@ -1,8 +1,10 @@
 #include "led.h"
 
-Adafruit_NeoPixel Led::getPixels()
+Led::Led()
 {
-    return Led::pixels;
+    this->pin = 0;
+    this->numPixels = 0;
+    this->pixels = Adafruit_NeoPixel();
 }
 
 Led::Led(uint8_t pin, uint8_t numPixels)
@@ -11,6 +13,11 @@ Led::Led(uint8_t pin, uint8_t numPixels)
     Led::numPixels = numPixels;
     Led::pixels = Adafruit_NeoPixel(Led::numPixels, Led::pin, NEO_GRB + NEO_KHZ800);
     Led::pixels.begin();
+}
+
+Adafruit_NeoPixel Led::getPixels()
+{
+    return Led::pixels;
 }
 
 void Led::offAllPixels()
@@ -102,5 +109,65 @@ void Led::rainbow(uint32_t wait)
         this->pixels.show();
 
         delay(wait);
+    }
+}
+
+void Led::fadingPulse(uint32_t color, uint32_t fadeInTime, uint32_t holdTime, uint32_t fadeOutTime)
+{
+    int fadeSteps = 50; // Number of steps for fading in and out
+
+    for (int step = 0; step < fadeSteps; step++)
+    {
+        int brightness = map(step, 0, fadeSteps - 1, 0, 255);
+
+        for (int i = 0; i < this->numPixels; i++)
+        {
+            pixels.setPixelColor(i, Adafruit_NeoPixel::Color(
+                                        ((color >> 16) & 0xFF) * brightness / 255,
+                                        ((color >> 8) & 0xFF) * brightness / 255,
+                                        (color & 0xFF) * brightness / 255));
+        }
+
+        pixels.show();
+        delay(fadeInTime / fadeSteps);
+    }
+
+    delay(holdTime);
+
+    for (int step = fadeSteps - 1; step >= 0; step--)
+    {
+        int brightness = map(step, 0, fadeSteps - 1, 0, 255);
+
+        for (int i = 0; i < this->numPixels; i++)
+        {
+            pixels.setPixelColor(i, Adafruit_NeoPixel::Color(
+                                        ((color >> 16) & 0xFF) * brightness / 255,
+                                        ((color >> 8) & 0xFF) * brightness / 255,
+                                        (color & 0xFF) * brightness / 255));
+        }
+
+        pixels.show();
+        delay(fadeOutTime / fadeSteps);
+    }
+}
+
+void Led::sparkle(uint32_t color, int numSparkles, uint32_t sparkleDuration)
+{
+    for (int sparkle = 0; sparkle < numSparkles; sparkle++)
+    {
+        int randomPixel = random(0, numPixels); // Generate a random pixel index
+
+        pixels.setPixelColor(randomPixel, color); // Turn on the random pixel
+        pixels.show();
+        delay(sparkleDuration);
+
+        pixels.setPixelColor(randomPixel, 0); // Turn off the random pixel
+        pixels.show();
+
+        // Add a small delay between sparkles
+        if (sparkle < numSparkles - 1)
+        {
+            delay(random(50, 200));
+        }
     }
 }

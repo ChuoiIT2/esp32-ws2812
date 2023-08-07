@@ -10,7 +10,7 @@ const uint8_t LED_PIN = 13;
 const uint8_t NUM_PIXELS = 24;
 
 // Global variables
-Led *led;
+Led led = Led(LED_PIN, NUM_PIXELS);
 State state;
 
 void runFX()
@@ -18,16 +18,16 @@ void runFX()
     switch (state.fx)
     {
     case OFF:
-        led->offAllPixels();
+        led.offAllPixels();
         break;
     case WIPE_COLOR:
-        led->wipeColor(state.colors[0], state.wait);
+        led.wipeColor(state.colors[0], state.wait);
         break;
     case ROTATE_COLOR:
-        led->rotateColors(state.colors[0], state.wait);
+        led.rotateColors(state.colors[0], state.wait);
         break;
     case CHASE_THEATER:
-        led->chaseTheater(state.colors[0], state.wait);
+        led.chaseTheater(state.colors[0], state.wait);
         break;
     default:
         break;
@@ -47,14 +47,14 @@ void onSerialReceive()
 
 void setup()
 {
-    led = new Led(LED_PIN, NUM_PIXELS);
     state = State();
 
     Serial.begin(BAUD_RATE);
-    Serial.onReceive(onSerialReceive);
+    // Serial.onReceive(onSerialReceive);
 }
 
 void loop()
 {
-    led->rainbow(100);
+    // // Example
+    // led.sparkle(0xFFFFFF, 5, 200);
 }
