@@ -104,3 +104,52 @@ void Led::rainbow(uint32_t wait)
         delay(wait);
     }
 }
+
+void Led::music(uint32_t amplitude, uint32_t wait)
+{
+
+    for (int i = 0; i < this->numPixels; i++)
+    {
+        int red = 0;
+        int green = 0;
+        int blue = 0;
+
+        if (i < 8)
+        {
+            red = 255;
+        }
+        else if (i < 16)
+        {
+            green = 255;
+        }
+        else
+        {
+            blue = 255;
+        }
+
+        this->pixels.setPixelColor(i, Adafruit_NeoPixel::Color(red, green, blue));
+    }
+
+    this->pixels.show();
+
+    delay(wait);
+}
+
+void Led::turnOn(uint8_t height, uint32_t color)
+{
+    for (int i = 0; i < this->numPixels; i++)
+    {
+        if (i <= height)
+        {
+            this->pixels.setPixelColor(i, color);
+        }
+        else
+        {
+            this->pixels.setPixelColor(i, 0);
+        }
+    }
+
+    this->pixels.show();
+
+    delay(100);
+}
