@@ -57,4 +57,9 @@ void loop()
 {
     // // Example
     // led.sparkle(0xFFFFFF, 5, 200);
+    // led.runningLights(0xFF0000, 12, 100);
+    // led.colorBounce(0x00FF00, 4, 3, 1000);
+    // led.rainbow(20);
+    // led.chaseTheater(0x8e44ad, 50);
+    // led.randomFlicker(0x8e44ad, 5, 200);
 }

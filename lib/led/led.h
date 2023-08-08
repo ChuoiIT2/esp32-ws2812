@@ -27,8 +27,6 @@ public:
 
     Adafruit_NeoPixel getPixels();
 
-    void runFX(FX fx, uint32_t color, uint32_t wait);
-
     void offAllPixels();
 
     void rotateColors(uint32_t color, uint32_t wait);
@@ -42,6 +40,12 @@ public:
     void fadingPulse(uint32_t color, uint32_t fadeInTime, uint32_t holdTime, uint32_t fadeOutTime);
 
     void sparkle(uint32_t color, int numSparkles, uint32_t sparkleDuration);
+
+    void runningLights(uint32_t color, int numLights, uint32_t delayBetweenLights);
+
+    void colorBounce(uint32_t color, int ballSize, int numBounces, uint32_t delayBetweenBounces);
+
+    void randomFlicker(uint32_t color, int numFlickers, uint32_t flickerDuration);
 };
 
 #endif

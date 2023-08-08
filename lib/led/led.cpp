@@ -171,3 +171,81 @@ void Led::sparkle(uint32_t color, int numSparkles, uint32_t sparkleDuration)
         }
     }
 }
+
+void Led::runningLights(uint32_t color, int numLights, uint32_t delayBetweenLights)
+{
+    for (int startPixel = 0; startPixel <= numPixels - numLights; startPixel++)
+    {
+        for (int pixel = startPixel; pixel < startPixel + numLights; pixel++)
+        {
+            pixels.setPixelColor(pixel, color);
+        }
+
+        pixels.show();
+        delay(delayBetweenLights);
+
+        for (int pixel = startPixel; pixel < startPixel + numLights; pixel++)
+        {
+            pixels.setPixelColor(pixel, 0);
+        }
+    }
+}
+
+void Led::colorBounce(uint32_t color, int ballSize, int numBounces, uint32_t delayBetweenBounces)
+{
+    for (int bounce = 0; bounce < numBounces; bounce++)
+    {
+        for (int pixel = 0; pixel <= this->numPixels - ballSize; pixel++)
+        {
+            for (int i = 0; i < this->numPixels; i++)
+            {
+                this->pixels.setPixelColor(i, 0); // Clear all pixels
+            }
+
+            for (int i = pixel; i < pixel + ballSize; i++)
+            {
+                this->pixels.setPixelColor(i, color); // Set pixels for the bouncing ball
+            }
+
+            this->pixels.show();
+            delay(delayBetweenBounces / (this->numPixels - ballSize));
+        }
+
+        for (int pixel = this->numPixels - ballSize; pixel >= 0; pixel--)
+        {
+            for (int i = 0; i < numPixels; i++)
+            {
+                this->pixels.setPixelColor(i, 0); // Clear all pixels
+            }
+
+            for (int i = pixel; i < pixel + ballSize; i++)
+            {
+                this->pixels.setPixelColor(i, color); // Set pixels for the bouncing ball
+            }
+
+            this->pixels.show();
+            delay(delayBetweenBounces / (numPixels - ballSize));
+        }
+    }
+}
+
+void Led::randomFlicker(uint32_t color, int numFlickers, uint32_t flickerDuration)
+{
+    for (int flicker = 0; flicker < numFlickers; flicker++)
+    {
+        for (int pixel = 0; pixel < this->numPixels; pixel++)
+        {
+            if (random(0, 2) == 0)
+            { // Randomly turn on or off the pixel
+                this->pixels.setPixelColor(pixel, color);
+            }
+            else
+            {
+                this->pixels.setPixelColor(pixel, 0);
+            }
+        }
+        this->pixels.show();
+        delay(flickerDuration);
+    }
+}
+
