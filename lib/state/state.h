@@ -10,10 +10,10 @@ class State
 public:
     FX fx;
     std::vector<uint32_t> colors;
-    int wait;
+    uint32_t wait;
 
     State();
-    State(FX fx, std::vector<uint32_t> colors, int wait);
+    State(FX fx, std::vector<uint32_t> colors, uint32_t wait);
 };
 
 #endif

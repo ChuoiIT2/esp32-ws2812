@@ -9,26 +9,26 @@ Led::Led()
 
 Led::Led(uint8_t pin, uint8_t numPixels)
 {
-    Led::pin = pin;
-    Led::numPixels = numPixels;
-    Led::pixels = Adafruit_NeoPixel(Led::numPixels, Led::pin, NEO_GRB + NEO_KHZ800);
-    Led::pixels.begin();
+    this->pin = pin;
+    this->numPixels = numPixels;
+    this->pixels = Adafruit_NeoPixel(numPixels, pin, NEO_GRB + NEO_KHZ800);
+    this->pixels.begin();
 }
 
 Adafruit_NeoPixel Led::getPixels()
 {
-    return Led::pixels;
+    return this->pixels;
 }
 
 void Led::offAllPixels()
 {
-    Led::pixels.clear();
-    Led::pixels.show();
+    this->pixels.clear();
+    this->pixels.show();
 }
 
 void Led::rotateColors(uint32_t color, uint32_t wait)
 {
-    for (int i = 0; i < Led::numPixels; i++)
+    for (int i = 0; i < this->numPixels; i++)
     {
         pixels.setPixelColor(i, color);
         pixels.show();
@@ -39,7 +39,7 @@ void Led::rotateColors(uint32_t color, uint32_t wait)
 
 void Led::wipeColor(uint32_t color, uint32_t wait)
 {
-    for (int i = 0; i < Led::numPixels; i++)
+    for (int i = 0; i < this->numPixels; i++)
     {
         pixels.setPixelColor(i, color);
         pixels.show();
@@ -53,17 +53,17 @@ void Led::chaseTheater(uint32_t color, uint32_t wait)
     {
         for (int q = 0; q < 3; q++)
         {
-            for (int i = 0; i < Led::numPixels; i = i + 3)
+            for (int i = 0; i < this->numPixels; i = i + 3)
             {
-                Led::pixels.setPixelColor(i + q, color);
+                this->pixels.setPixelColor(i + q, color);
             }
             pixels.show();
 
             delay(wait);
 
-            for (int i = 0; i < Led::numPixels; i = i + 3)
+            for (int i = 0; i < this->numPixels; i = i + 3)
             {
-                Led::pixels.setPixelColor(i + q, 0);
+                this->pixels.setPixelColor(i + q, 0);
             }
         }
     }

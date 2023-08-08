@@ -8,7 +8,7 @@ State::State()
     wait = 100;
 }
 
-State::State(FX fx, std::vector<uint32_t> colors, int wait)
+State::State(FX fx, std::vector<uint32_t> colors, uint32_t wait)
 {
     this->fx = fx;
     this->colors = colors;

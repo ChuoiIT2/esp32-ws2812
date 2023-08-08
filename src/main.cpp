@@ -1,9 +1,17 @@
 #include <Adafruit_NeoPixel.h>
+#include <BLEDevice.h>
+#include <BLEUtils.h>
+#include <BLEServer.h>
 #include "led.h"
 #include "state.h"
 
 // Serial
 #define BAUD_RATE 115200
+
+// BLE
+#define BLE_DEVICE_NAME "Chuoi-LED"
+#define BLE_SERVICE_UUID "27186965-c935-47a2-8fdb-486f1573081d"
+#define BLE_CHARACTERISTIC_UUID "cd530ace-578a-4144-81ec-40e8bccdc311"
 
 // Constants
 const uint8_t LED_PIN = 13;
@@ -45,12 +53,44 @@ void onSerialReceive()
     }
 }
 
+class MyBLECharacteristicCallbacks : public BLECharacteristicCallbacks
+{
+    void onWrite(BLECharacteristic *pCharacteristic)
+    {
+        std::string value = pCharacteristic->getValue();
+        // Handle the received data from the central client
+        Serial.println("Received data: " + String(value.c_str()));
+    }
+};
+
+void setupBLE()
+{
+    BLEDevice::init(BLE_DEVICE_NAME);
+    BLEServer *pServer = BLEDevice::createServer();
+    BLEService *pService = pServer->createService(BLE_SERVICE_UUID);
+
+    BLECharacteristic *pCharacteristic = pCharacteristic = pService->createCharacteristic(
+        BLE_CHARACTERISTIC_UUID,
+        BLECharacteristic::PROPERTY_WRITE);
+    pCharacteristic->setCallbacks(new MyBLECharacteristicCallbacks());
+
+    pService->start();
+
+    BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+    pAdvertising->addServiceUUID(BLE_SERVICE_UUID);
+    pAdvertising->start();
+}
+
 void setup()
 {
     state = State();
 
     Serial.begin(BAUD_RATE);
     // Serial.onReceive(onSerialReceive);
+
+    Serial.println("[BLE] starting...");
+    setupBLE();
+    Serial.println("[BLE] started");
 }
 
 void loop()
