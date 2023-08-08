@@ -37,6 +37,39 @@ void runFX()
     case CHASE_THEATER:
         led->chaseTheater(state.colors[0], state.wait);
         break;
+    case RAINBOW:
+        led->rainbow(state.wait);
+        break;
+    case FADING_PULSE:
+        led->fadingPulse(state.colors[0], state.wait, state.wait, state.wait);
+        break;
+    case SPARKLE:
+        led->sparkle(state.colors[0], 3, state.wait);
+        break;
+    case RUNNING_LIGHTS:
+        led->runningLights(state.colors[0], 3, state.wait);
+        break;
+    case COLOR_BOUNCE:
+        led->colorBounce(state.colors[0], 3, state.wait);
+        break;
+    case RANDOM_FLICKER:
+        led->randomFlicker(state.colors[0], 3, state.wait);
+        break;
+    case METEOR_SHOWER:
+        led->meteorShower(state.colors[0], 3, 3, state.wait);
+        break;
+    case COLOR_FADE:
+        led->colorFade(state.colors[0], state.colors[1], 100, state.wait);
+        break;
+    case CYLON_EYE:
+        led->cylonEye(state.colors[0], 4, 3, state.wait);
+        break;
+    case HEARTBEAT:
+        led->heartbeat(state.colors[0], 3, state.wait, 255);
+        break;
+    case FIRE_EFFECT:
+        led->fireEffect(state.colors[0], 50, 5);
+        break;
     default:
         break;
     }
@@ -88,15 +121,5 @@ void setup()
 
 void loop()
 {
-    // Serial.println("Running FX...");
-    // delay(200);
-    // // Example
-    // led->sparkle(0xFFFFFF, 5, 200);
-    // led->runningLights(0xFF0000, 12, 100);
-    // led->colorBounce(0x00FF00, 4, 3, 1000);
-    // led->rainbow(20);
-    // led->chaseTheater(0x8e44ad, 50);
-    // led->randomFlicker(0x8e44ad, 5, 200);
-
-    delay(100);
+    runFX();
 }

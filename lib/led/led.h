@@ -11,6 +11,16 @@ enum FX
     ROTATE_COLOR = 2,
     CHASE_THEATER = 3,
     RAINBOW = 4,
+    FADING_PULSE = 5,
+    SPARKLE = 6,
+    RUNNING_LIGHTS = 7,
+    COLOR_BOUNCE = 8,
+    RANDOM_FLICKER = 9,
+    METEOR_SHOWER = 10,
+    COLOR_FADE = 11,
+    CYLON_EYE = 12,
+    HEARTBEAT = 13,
+    FIRE_EFFECT = 14
 };
 
 class Led
@@ -41,9 +51,19 @@ public:
 
     void runningLights(uint32_t color, int numLights, uint32_t delayBetweenLights);
 
-    void colorBounce(uint32_t color, int ballSize, int numBounces, uint32_t delayBetweenBounces);
+    void colorBounce(uint32_t color, int ballSize, uint32_t delayBetweenBounces);
 
     void randomFlicker(uint32_t color, int numFlickers, uint32_t flickerDuration);
+
+    void meteorShower(uint32_t color, int numMeteors, uint32_t trailLength, uint32_t meteorDelay);
+
+    void colorFade(uint32_t color1, uint32_t color2, int numSteps, uint32_t stepDuration);
+
+    void cylonEye(uint32_t color, int eyeSize, int numCycles, uint32_t cycleDelay);
+
+    void heartbeat(uint32_t color, int numBeats, uint32_t beatDuration, int maxBrightness);
+
+    void fireEffect(uint32_t color, int flickerDelay, int numCycles);
 };
 
 #endif
