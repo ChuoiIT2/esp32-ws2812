@@ -18,7 +18,7 @@ const uint8_t LED_PIN = 13;
 const uint8_t NUM_PIXELS = 24;
 
 // Global variables
-Led led = Led(LED_PIN, NUM_PIXELS);
+Led *led;
 State state;
 
 void runFX()
@@ -26,30 +26,19 @@ void runFX()
     switch (state.fx)
     {
     case OFF:
-        led.offAllPixels();
+        led->offAllPixels();
         break;
     case WIPE_COLOR:
-        led.wipeColor(state.colors[0], state.wait);
+        led->wipeColor(state.colors[0], state.wait);
         break;
     case ROTATE_COLOR:
-        led.rotateColors(state.colors[0], state.wait);
+        led->rotateColors(state.colors[0], state.wait);
         break;
     case CHASE_THEATER:
-        led.chaseTheater(state.colors[0], state.wait);
+        led->chaseTheater(state.colors[0], state.wait);
         break;
     default:
         break;
-    }
-}
-
-void onSerialReceive()
-{
-    Serial.println("onSerialReceive");
-
-    if (Serial.available() > 0)
-    {
-        Serial.println("Serial.readStringUntil('\n')");
-        Serial.println(Serial.readStringUntil('\n'));
     }
 }
 
@@ -58,8 +47,12 @@ class MyBLECharacteristicCallbacks : public BLECharacteristicCallbacks
     void onWrite(BLECharacteristic *pCharacteristic)
     {
         std::string value = pCharacteristic->getValue();
+
         // Handle the received data from the central client
-        Serial.println("Received data: " + String(value.c_str()));
+        state.fromJson(value);
+        Serial.println("FX: " + String(state.fx));
+        Serial.println("Colors: " + String(state.colors[0]));
+        Serial.println("Wait: " + String(state.wait));
     }
 };
 
@@ -84,9 +77,9 @@ void setupBLE()
 void setup()
 {
     state = State();
+    led = new Led(LED_PIN, NUM_PIXELS);
 
     Serial.begin(BAUD_RATE);
-    // Serial.onReceive(onSerialReceive);
 
     Serial.println("[BLE] starting...");
     setupBLE();
@@ -95,11 +88,15 @@ void setup()
 
 void loop()
 {
+    // Serial.println("Running FX...");
+    // delay(200);
     // // Example
-    // led.sparkle(0xFFFFFF, 5, 200);
-    // led.runningLights(0xFF0000, 12, 100);
-    // led.colorBounce(0x00FF00, 4, 3, 1000);
-    // led.rainbow(20);
-    // led.chaseTheater(0x8e44ad, 50);
-    // led.randomFlicker(0x8e44ad, 5, 200);
+    // led->sparkle(0xFFFFFF, 5, 200);
+    // led->runningLights(0xFF0000, 12, 100);
+    // led->colorBounce(0x00FF00, 4, 3, 1000);
+    // led->rainbow(20);
+    // led->chaseTheater(0x8e44ad, 50);
+    // led->randomFlicker(0x8e44ad, 5, 200);
+
+    delay(100);
 }

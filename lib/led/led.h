@@ -16,7 +16,7 @@ enum FX
 class Led
 {
 private:
-    Adafruit_NeoPixel pixels;
+    Adafruit_NeoPixel *pixels;
     uint8_t pin;
     uint8_t numPixels;
 
@@ -24,8 +24,6 @@ public:
     Led();
 
     Led(uint8_t pin, uint8_t numPixels);
-
-    Adafruit_NeoPixel getPixels();
 
     void offAllPixels();
 
