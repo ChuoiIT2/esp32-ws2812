@@ -105,29 +105,54 @@ void Led::rainbow(uint32_t wait)
     }
 }
 
-void Led::music(uint32_t amplitude, uint32_t wait)
+int addLedsConstant = 4;        // how fast are LEDS added to bar
+int removeLedsTimeConstant = 4; // how fast are LEDS removed from bar
+int middleColorLED = 25;
+
+int numLedsToLight = 0;
+
+long lastRefreshTime;
+
+void Led::music(uint32_t ledsToLight, uint32_t wait)
 {
 
-    for (int i = 0; i < this->numPixels; i++)
+    if (ledsToLight > numLedsToLight)
     {
-        int red = 0;
-        int green = 0;
-        int blue = 0;
-
-        if (i < 8)
+        numLedsToLight += addLedsConstant;
+    }
+    else if (ledsToLight < numLedsToLight)
+    {
+        if (millis() - lastRefreshTime >= removeLedsTimeConstant)
         {
-            red = 255;
+            lastRefreshTime += removeLedsTimeConstant;
+            numLedsToLight -= 1;
         }
-        else if (i < 16)
+    }
+
+    if (numLedsToLight < 1)
+    {
+        numLedsToLight = 0;
+    }
+    if (numLedsToLight > this->numPixels)
+    {
+        numLedsToLight = this->numPixels;
+    }
+
+    for (int led = 0; led < numLedsToLight; led++)
+    {
+        if (led < middleColorLED)
         {
-            green = 255;
+            // this->pixels.setPixelColor(led, (map(led, 0, middleColorLED - 1, 0, 255), 255, 0));
+            this->pixels.setPixelColor(led, 0x00FF00);
         }
         else
         {
-            blue = 255;
+            this->pixels.setPixelColor(led, 0x00FF00);
         }
-
-        this->pixels.setPixelColor(i, Adafruit_NeoPixel::Color(red, green, blue));
+    }
+    for (int led = this->numPixels; led >= numLedsToLight; led--)
+    {
+        this->pixels.setPixelColor(led, 0);
     }
 
     this->pixels.show();

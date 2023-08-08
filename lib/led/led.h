@@ -37,7 +37,7 @@ public:
 
     void rainbow(uint32_t wait);
 
-    void music(uint32_t amplitude, uint32_t wait);
+    void music(uint32_t ledsToLight, uint32_t wait);
 
     void turnOn(uint8_t height, uint32_t color);
 };

@@ -6,7 +6,9 @@ Sound::Sound(uint8_t pin)
     pinMode(Sound::pin, INPUT);
 }
 
-uint32_t Sound::getData()
+uint32_t Sound::getData(uint32_t NUM_PIXELS, uint32_t wait)
 {
-    return analogRead(Sound::pin);
+    int n = analogRead(Sound::pin);
+    n = map(n, 0, 4096, 0, NUM_PIXELS);
+    return n;
 }
