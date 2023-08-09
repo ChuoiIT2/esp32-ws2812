@@ -26,6 +26,11 @@ void runFX()
 {
     uint16_t sv = 0;
 
+    if (state.colors.size() == 0)
+    {
+        state.colors.push_back(0xffffff);
+    }
+
     switch (state.fx)
     {
     case OFF:
@@ -62,6 +67,10 @@ void runFX()
         led->meteorShower(state.colors[0], 3, 3, state.wait);
         break;
     case COLOR_FADE:
+        if (state.colors.size() < 2)
+        {
+            state.colors.push_back(0xffffff);
+        }
         led->colorFade(state.colors[0], state.colors[1], 100, state.wait);
         break;
     case CYLON_EYE:
