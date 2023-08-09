@@ -20,7 +20,8 @@ enum FX
     COLOR_FADE = 11,
     CYLON_EYE = 12,
     HEARTBEAT = 13,
-    FIRE_EFFECT = 14
+    FIRE_EFFECT = 14,
+    SOUND_REACTIVE = 15
 };
 
 class Led
@@ -36,6 +37,10 @@ public:
     Led(uint8_t pin, uint8_t numPixels);
 
     void offAllPixels();
+
+    void setRTSColor(uint32_t color);
+
+    void reactToSound(uint16_t soundValue, std::vector<uint32_t> colors, uint32_t wait);
 
     void rotateColors(uint32_t color, uint32_t wait);
 

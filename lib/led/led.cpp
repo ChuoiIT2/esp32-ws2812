@@ -21,6 +21,43 @@ void Led::offAllPixels()
     this->pixels->show();
 }
 
+void Led::setRTSColor(uint32_t color)
+{
+    this->pixels->setPixelColor((this->numPixels / 2) - 1, color);
+    this->pixels->setPixelColor(this->numPixels / 2, color);
+}
+
+// range: 0 - 150
+void Led::reactToSound(uint16_t soundValue, std::vector<uint32_t> colors, uint32_t wait)
+{
+    int threshold = 150;
+    if (soundValue > threshold)
+    {
+        soundValue = threshold;
+    }
+
+    if (soundValue <= 0)
+    {
+        return;
+    }
+
+    this->offAllPixels();
+    int numPixelsToLight = map(soundValue, 0, threshold, 0, this->numPixels / 2);
+
+    for (int i = 0; i < numPixelsToLight; i++)
+    {
+        this->pixels->setPixelColor(i, colors[i % colors.size()]);
+    }
+    for (int i = this->numPixels - 1; i >= this->numPixels - numPixelsToLight; i--)
+    {
+        this->pixels->setPixelColor(i, colors[i % colors.size()]);
+    }
+
+    this->pixels->show();
+
+    delay(wait);
+}
+
 void Led::rotateColors(uint32_t color, uint32_t wait)
 {
     this->offAllPixels();

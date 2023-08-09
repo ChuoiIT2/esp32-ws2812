@@ -16,6 +16,7 @@
 // Constants
 const uint8_t LED_PIN = 13;
 const uint8_t NUM_PIXELS = 24;
+const uint8_t SOUND_PIN = 14;
 
 // Global variables
 Led *led;
@@ -23,6 +24,8 @@ State state;
 
 void runFX()
 {
+    uint16_t sv = 0;
+
     switch (state.fx)
     {
     case OFF:
@@ -70,6 +73,11 @@ void runFX()
     case FIRE_EFFECT:
         led->fireEffect(state.colors[0], 50, 5);
         break;
+    case SOUND_REACTIVE:
+        sv = map(analogRead(SOUND_PIN), 0, 4095, 0, 10000);
+        Serial.println(sv);
+        led->reactToSound(sv, state.colors, state.wait);
+        break;
     default:
         break;
     }
@@ -109,11 +117,18 @@ void setupBLE()
 
 void setup()
 {
+    // Initialize the serial
+    Serial.begin(BAUD_RATE);
+
+    // Initialize the LED ring
     state = State();
     led = new Led(LED_PIN, NUM_PIXELS);
 
-    Serial.begin(BAUD_RATE);
+    // Initialize the sound sensor
+    pinMode(SOUND_PIN, INPUT);
+    pinMode(34, INPUT);
 
+    // Initialize the BLE
     Serial.println("[BLE] starting...");
     setupBLE();
     Serial.println("[BLE] started");
