@@ -80,7 +80,7 @@ void runFX()
         led->heartbeat(state.colors[0], 3, state.wait, 255);
         break;
     case FIRE_EFFECT:
-        led->fireEffect(state.colors[0], 50, 5);
+        led->fireEffect(state.colors[0], state.wait, 1);
         break;
     case SOUND_REACTIVE:
         sv = map(analogRead(SOUND_PIN), 0, 4095, 0, 10000);
