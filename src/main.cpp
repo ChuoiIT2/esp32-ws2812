@@ -84,7 +84,6 @@ void runFX()
         break;
     case SOUND_REACTIVE:
         sv = map(analogRead(SOUND_PIN), 0, 4095, 0, 10000);
-        Serial.println(sv);
         led->reactToSound(sv, state.colors, state.wait);
         break;
     default:

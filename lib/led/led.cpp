@@ -473,10 +473,6 @@ void Led::fireEffect(uint32_t color, int flickerDelay, int numCycles)
             int green = ((color >> 8) & 0xFF) * flicker / 100;
             int blue = (color & 0xFF) * flicker / 100;
 
-            Serial.println(red);
-            Serial.println(green);
-            Serial.println(blue);
-
             this->pixels->setPixelColor(i, Adafruit_NeoPixel::Color(red, green, blue));
         }
 
